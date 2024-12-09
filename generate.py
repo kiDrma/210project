@@ -125,10 +125,8 @@ def export_to_csv():
 
     with open('posts_data.csv', mode='w', newline='') as file:
         writer = csv.writer(file)
-        writer.writerow(column_names)  # Write the header
-        writer.writerows(rows)  # Write the data rows
-
-    print("Data has been successfully written to posts_data.csv.")
+        writer.writerow(column_names)
+        writer.writerows(rows)  
 
 def main():
     generate_data()
