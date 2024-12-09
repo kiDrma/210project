@@ -1,7 +1,15 @@
 import sqlite3
 import random
-import datetime
 import csv
+
+# Edit database features before generation
+database_size = 10000
+percent_twitternegative = 0.30 
+percent_instanegative = 0.65
+percent_facebooknegative = 0.5
+start_year = 2016
+end_year = 2024
+pos_increase = 0.1 # Between 0 and 1
 
 random.seed(123)
 
@@ -17,20 +25,19 @@ create_table = """
         Keyword VARCHAR(30),
         Reason VARCHAR(30),
         Platform VARCHAR(30),
-        Date_Posted DATE
+        Year INT
     )
 """
 
 cursor.execute(create_table)
 
-database_size = 1000
 id = 0
 text = ""
 sentiment = ""
 keyword = ""
 reason = ""
 platform = ""
-date = datetime.date.today()
+year = 0
 negative_keywords = ["bad", "horrible", "disastrous", "terrifying", "scary", "unethical", "concerning"]
 positive_keywords = ["innovative", "productive", "amazing", "beneficial", "hopeful", "good", "great"]
 posreason_keywords = ["helpful", "useful", "productive", "automation", "learning"]
@@ -42,7 +49,7 @@ def generate_data():
     for i in range(database_size):
         new_post = make_random_post()
         cursor.execute("""
-            INSERT INTO posts(PostID, Post_Text, Sentiment, Keyword, Reason, Platform, Date_Posted)
+            INSERT INTO posts(PostID, Post_Text, Sentiment, Keyword, Reason, Platform, Year)
             VALUES (?, ?, ?, ?, ?, ?, ?)
             """, new_post)
         
@@ -61,19 +68,20 @@ def random_post_platform_sentiment():
         platform = "Facebook"
 
     rand_sent = random.random()
-    print(rand_sent)
+    year_increase = abs(start_year - year) * pos_increase / (end_year - start_year)
+    rand_sent = rand_sent + year_increase
     if platform == "Twitter":
-        if rand_sent < .70:
-            sentiment = "Positive"
-        else:
+        if rand_sent < percent_twitternegative:
             sentiment = "Negative"
+        else:
+            sentiment = "Positive"
     elif platform == "Instagram":
-        if rand_sent < .60:
+        if rand_sent < percent_instanegative:
             sentiment = "Negative"
         else:
             sentiment = "Positive"
     else:
-        if rand_sent <.50:
+        if rand_sent < percent_facebooknegative:
             sentiment = "Negative"
         else:
             sentiment = "Positive"
@@ -95,32 +103,26 @@ def random_text():
 
     text = " ".join(words_to_include + random_words)
 
-def random_date():
-    global date
-    year = random.randint(2019, 2024)
-    month = random.randint(1, 12)
-    day = random.randint(1, 28)
+def random_year():
+    global year
+    year = random.randint(start_year, end_year)
     
-    date = datetime.date(year, month, day)
-
 def make_random_post():
     global id
+    random_year()
     random_post_platform_sentiment()
     random_post_reason_keyword()
     random_text()
-    random_date()
 
     id = id + 1
-    return [id, text, sentiment, keyword, reason, platform, date]
+    return [id, text, sentiment, keyword, reason, platform, year]
 
 def export_to_csv():
     cursor.execute("SELECT * FROM Posts")
     rows = cursor.fetchall()
 
-    # Get column names
     column_names = [description[0] for description in cursor.description]
 
-    # Write to CSV file
     with open('posts_data.csv', mode='w', newline='') as file:
         writer = csv.writer(file)
         writer.writerow(column_names)  # Write the header

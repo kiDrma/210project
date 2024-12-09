@@ -1,0 +1,7 @@
+sqlite3
+random
+matplotlib.pyplot
+sklearn
+pandas
+csv
+numpy

@@ -1,0 +1,13 @@
+% of positive posts that came from Instagram: 23.67%
+% of positive posts that came from Twitter: 43.53%
+% of positive posts that came from Facebook: 32.8%
+Total # of positive posts: 5707
+
+% of negative posts that came from Instagram: 46.49%
+% of negative posts that came from Twitter: 19.45%
+% of negative posts that came from Facebook: 34.06%
+Total # of negative posts: 4293
+
+Most popular reason for positive sentiments: automation
+Most popular reason for negative sentiments: inhuman
+
