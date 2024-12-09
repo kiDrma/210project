@@ -4,8 +4,11 @@ This repository contains Python files for generating synthetic social media post
 ## Features
 - **Data Generation**: Generate synthetic data to perform analysis on.
 - **Data Analysis**: 
-    - Plot data in many different ways
+    - Generate summary of the data.
+    - Plot data in many different ways.
     - Analyze how data visualization can be misleading when focused on one subset of the data.
+- **Prediction using Linear Regression**
+    - Use sklearn's Linear Regression to predict future sentiments on historical data.
 
 ## Setup Instructions
 **1. Install the required libraries.**
