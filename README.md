@@ -1,4 +1,4 @@
-# 210project
+# Social Media AI Sentiment Analysis
 This repository contains Python files for generating synthetic social media post data and analyzing the dataset. 
 
 ## Features
